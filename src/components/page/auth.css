@@ -1,0 +1,11 @@
+.submitButton {
+    width:200px;
+}
+
+.rejectButton {
+    background-color: indianred;
+    width:200px;
+}
+.rejectButton {
+    background: indianred;
+}

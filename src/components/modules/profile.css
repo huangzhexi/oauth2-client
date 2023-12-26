@@ -1,0 +1,21 @@
+/* Profile.css */
+.profile {
+    padding: 20px;
+}
+.profile-title {
+    align-items: center;
+    width: 100%;
+    align-content: center;
+    text-align: center;
+}
+.profile h2 {
+    margin-bottom: 20px;
+    text-align: center;
+
+}
+
+.profile p {
+    margin-bottom: 10px;
+    text-align: center;
+
+}

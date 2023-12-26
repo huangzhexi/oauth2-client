@@ -1,0 +1,47 @@
+/* NavBar.css */
+.navbar {
+    background-color: #f8f9fa;
+    padding: 10px;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.navbar li {
+    float: left;
+}
+
+.navbar li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar li a:hover {
+    background-color: #ddd;
+}
+
+.welcome-p {
+    display: flex;
+    float: right;
+    text-align: center;
+    padding: 14px 16px;
+
+    /*align-self: center;*/
+}
+.navbar-logo {
+    display: flex;
+    float: left;
+    text-align: center;
+    padding: 14px 16px;
+    color: darkblue;
+    font-size: 15px;
+    font-weight: bold;
+    /*align-self: center;*/
+}

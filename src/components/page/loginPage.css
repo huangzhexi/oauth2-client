@@ -9,11 +9,16 @@
   margin: 0;
 }
 
-body {
+.loginPage-container {
   background-color: rgb(22, 30, 49);
   background: url("../../public/img.png");
   background-attachment: fixed;
   background-size: cover;
+  position: fixed; /* Fixed positioning */
+  top: 0; /* Set top, left, right and bottom to 0 to stretch the element */
+  left: 0; /* to the whole screen */
+  right: 0;
+  bottom: 0;
   /*position: absolute;*/
 }
 .logo {

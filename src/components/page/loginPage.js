@@ -1,10 +1,70 @@
 
 
-import "./index.css"
+import "./loginPage.css"
 import qqImage from "../../public/QQ.png"
 import wechatImage from "../../public/wechat-fill.png"
+import {useState} from "react";
+import {json} from "react-router-dom";
+// import { redirect } from "react-router-dom";
+import  { Redirect } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 
-function Index() {
+function LoginPage(props) {
+    // if (props === undefined ||props.serverUri === undefined) {
+    // props.serverUri = "localhost:9096"
+    // }
+    const [user, setUser] = useState({
+        username: "",
+        password: ""
+    })
+    const handleUserChange = (event) => {
+        setUser({
+            ...user,
+            [event.target.name]: event.target.value
+        })
+    }
+    const login = (event) => {
+        event.preventDefault();
+        // console.log(JSON.stringify(user))
+        fetch("/api/login", {
+            method: "post",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(user)
+        }).then((res) => {
+            if (res.status === 200) {
+                // return <Redirect to="/new-path" />;
+                console.log("成功！")
+                // const handleClick = () => {
+
+                // };
+                return res
+            } else {
+                // alert("username or password is incorrect.")
+                throw "username or password is incorrect."
+            }
+        }).then(() => {
+            let options = {
+                method: 'get',
+                url: "/api/getUserInfo",
+            }
+            fetch(options.url, { method: options.method, headers: options.headers })
+                .then(response => response.json())
+                .then(data => {
+                    const username = data.UsernameString
+                    console.log("usrname: " + username)
+                    props.setUsername(username)
+                    props.setUser(user.username)
+
+                    window.location = "/auth"
+                }).catch(error => console.log("error: " ,error))
+
+        })
+            .catch((error) => {
+            console.log(error)
+            alert("username or password is incorrect")
+        })
+    }
+
     const registerBtnHandler = () => {
         const login = document.querySelector('.login')
         const register = document.querySelector('.register')
@@ -85,87 +145,90 @@ function Index() {
     }
     console.log("hello")
     return (
-        <div className="box">
-            <div className="logo"></div>
-            <div className="forms">
-                <div className="tips">
-                    <span className="login-btn" onClick={loginBtnHandler}>登录</span>
-                    <span className="register-btn" onClick={registerBtnHandler}>注册</span>
-                </div>
-                <div className="login">
-                    <div className="form-title">
-                        <h1>登录</h1>
-                        <h3>欢迎使用Oauth2.0统一身份认证系统</h3>
+        <div className="loginPage-container">
+            <div className="box">
+                <div className="logo"></div>
+                <div className="forms">
+                    <div className="tips">
+                        <span className="login-btn" onClick={loginBtnHandler}>登录</span>
+                        <span className="register-btn" onClick={registerBtnHandler}>注册</span>
                     </div>
-                    <form action="/login" method="POST">
-                        <div className="form">
-                            <div className="username input-item">
-                                <input type="text" className="ipts" name="username" required />
+                    <div className="login">
+                        <div className="form-title">
+                            <h1>登录</h1>
+                            <h3>欢迎使用Oauth2.0统一身份认证系统</h3>
+                        </div>
+                        <form action="/login" method="POST">
+                            <div className="form">
+                                <div className="username input-item">
+                                    <input type="text" className="ipts" name="username" required value={user.username} onChange={handleUserChange} />
 
-                            </div>
-                            <div className="password input-item">
-                                <input type="password" className="ipts" name="password" required />
-
-                            </div>
-                            <div className="other-select">
-                                <div className="rem-pwd">
-                                    <input type="checkbox" id="check" />
-                                    <label htmlFor="check" className="rem-pwd-tips">记住密码</label>
                                 </div>
-                                <span className="fogot-pwd-btn" onClick={fogotPwdBtnHandler}>忘记密码</span>
-                            </div>
-                            <button className="btn">登录</button>
-                            <div className="other-login">
-                                <span>其他方式</span>
-                                <div className="login-img">
-                                    <img src={qqImage} alt="" />
+                                <div className="password input-item">
+                                    <input type="password" className="ipts" name="password" required value={user.password} onChange={handleUserChange}/>
+
+                                </div>
+                                <div className="other-select">
+                                    <div className="rem-pwd">
+                                        <input type="checkbox" id="check" />
+                                        <label htmlFor="check" className="rem-pwd-tips">记住密码</label>
+                                    </div>
+                                    <span className="fogot-pwd-btn" onClick={fogotPwdBtnHandler}>忘记密码</span>
+                                </div>
+                                <button className="btn" onClick={login}>登录</button>
+                                <div className="other-login">
+                                    <span>其他方式</span>
+                                    <div className="login-img">
+                                        <img src={qqImage} alt="" />
                                         <img src={wechatImage} alt="" />
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-                <div className="register">
-                    <div className="form-title">
-                        <h1>注册</h1>
-                        <h4>注册后务必线下激活，否则无法访问授权内容。</h4>
+                        </form>
                     </div>
-                    <div className="form">
-                        <div className="username input-item">
-                            <input type="text" className="ipts" />
+                    <div className="register">
+                        <div className="form-title">
+                            <h1>注册</h1>
+                            <h4>注册后务必线下激活，否则无法访问授权内容。</h4>
                         </div>
-                        <div className="password input-item">
-                            <input type="password" className="ipts" />
+                        <div className="form">
+                            <div className="username input-item">
+                                <input type="text" className="ipts" />
+                            </div>
+                            <div className="password input-item">
+                                <input type="password" className="ipts" />
+                            </div>
+                            <div className="conform-password input-item" >
+                                <input type="password" className="ipts" />
+                            </div>
+                            <button className="btn">Register</button>
                         </div>
-                        <div className="conform-password input-item" >
-                            <input type="password" className="ipts" />
-                        </div>
-                        <button className="btn">Register</button>
                     </div>
-                </div>
-                <div className="fogot-pwd">
-                    <div className="form-title">
-                        <h1>忘记密码</h1>
-                        <h4>欢迎使用长安大学统一身份认证系统</h4>
-                    </div>
-                    <div className="form">
-                        <div className="username input-item">
-                            <input type="text" className="ipts" />
+                    <div className="fogot-pwd">
+                        <div className="form-title">
+                            <h1>忘记密码</h1>
+                            <h4>欢迎使用长安大学统一身份认证系统</h4>
                         </div>
-                        <div className="password input-item">
-                            <input type="password" className="ipts" />
-                        </div>
-                        <div className="code input-item">
-                            <input type="text" className="ipts" />
+                        <div className="form">
+                            <div className="username input-item">
+                                <input type="text" className="ipts" />
+                            </div>
+                            <div className="password input-item">
+                                <input type="password" className="ipts" />
+                            </div>
+                            <div className="code input-item">
+                                <input type="text" className="ipts" />
                                 <span className="veri-code-tips" onClick={veriCodeTipsClick}>点击刷新</span>
+                            </div>
+                            <button className="btn">确认</button>
                         </div>
-                        <button className="btn">确认</button>
                     </div>
                 </div>
             </div>
         </div>
+
     )
 }
 
-export default Index
+export default LoginPage
